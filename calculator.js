@@ -24,17 +24,18 @@ function storeNum(event) {
   if (!operatorSet.has(n)) {
     numString = numString + n;
     console.log('number: ', numString);
-    outPutBox.value = numString;
+    console.log(expressionArray);
     //expressionArray.push(numString);
   }
 
   if (operatorSet.has(n)) {
     expressionArray.push(numString);
     expressionArray.push(n);
+    console.log('operator: ', n);
     numString = '';
     console.log('expressionArray: ', expressionArray);
   }
-
+  outPutBox.value = numString;
   if (typeof expressionArray[2] !== 'undefined') {
     // console.log('expressionArray.length: ', expressionArray.length);
     lastExpression();
@@ -47,15 +48,22 @@ function storeNum(event) {
 }
 
 function lastExpression() {
+  if (expressionArray[1] === '=') {
+    expressionArray.splice(1, 2);
+    console.log('expressionArray in if statement: ', expressionArray);
+    return expressionArray;
+  }
   num1 = parseFloat(expressionArray[0]);
   operator = expressionArray[1];
   num2 = parseFloat(expressionArray[2]);
   answer = calculate(num1, operator, num2);
-  const currentDisplay = (outPutBox.value = answer);
-  expressionArray = [];
+  outPutBox.value = answer;
+  expressionArray.splice(0, 3);
   console.log('expressionArray post reset: ', expressionArray);
-  expressionArray.push(currentDisplay);
+  expressionArray.unshift(answer);
   console.log('expressionArray post push: ', expressionArray);
+  outPutBox.value = answer;
+
   //answer = num1;
   //console.log('expressionArray post slice: ', expressionArray);
   console.log('ima workin');
