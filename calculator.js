@@ -1,12 +1,13 @@
 //uncaught syntax error - answer has already been declared
-const operatorSet = new Set(["+", "-", "x", "/", "="]);
+const operatorSet = new Set(['+', '-', 'x', '/', '=']);
 let expressionArray = [];
-let numString = "";
+let numString = '';
 let answer = 0;
-const buttons = document.querySelectorAll("button");
+const buttons = document.querySelectorAll('button');
+const outPutBox = document.getElementById('output-box');
 
- buttons.forEach(function (button) {
-  button.addEventListener("click", storeNum);
+buttons.forEach(function (button) {
+  button.addEventListener('click', storeNum);
 });
 
 /*taskListItem.addEventListener("contextmenu", (e) => { 
@@ -15,48 +16,33 @@ const buttons = document.querySelectorAll("button");
 function storeNum(event) {
   //event.preventDefault();
   let n = event.target.value;
-  if (n === "C") {
-    n = "";
+  if (n === 'C') {
+    n = '';
     clearOutputBox();
   }
 
   if (!operatorSet.has(n)) {
     numString = numString + n;
-    document.getElementById("output-box").value = numString;  
+    console.log('number: ', numString);
+    outPutBox.value = numString;
+    //expressionArray.push(numString);
   }
 
   if (operatorSet.has(n)) {
     expressionArray.push(numString);
     expressionArray.push(n);
-    numString = "";
+    numString = '';
+    console.log('expressionArray: ', expressionArray);
   }
 
-  if (n == "=") {
-    multDiv();
-    addSubt();
+  if (typeof expressionArray[2] !== 'undefined') {
+    // console.log('expressionArray.length: ', expressionArray.length);
     lastExpression();
-  }
-}
 
-function multDiv() {
-  for (i = 0; i <= expressionArray.length; i++) {
-    if (expressionArray[i] == "x") {
-      convertNumStringToNum();
-    }
-    if (expressionArray[i] == "/") {
-      convertNumStringToNum();
-    }
-  }
-}
-
-function addSubt() {
-  for (i = 0; i <= expressionArray.length; i++) {
-    if (expressionArray[i] == "+") {
-      convertNumStringToNum();
-    }
-    if (expressionArray[i] == "-") {
-      convertNumStringToNum();
-    }
+    //console.log('expressionArray post slice: ', expressionArray);
+  } else if (n == '=') {
+    //  console.log('expressionArray: ', expressionArray);
+    lastExpression();
   }
 }
 
@@ -65,49 +51,48 @@ function lastExpression() {
   operator = expressionArray[1];
   num2 = parseFloat(expressionArray[2]);
   answer = calculate(num1, operator, num2);
-}
-
-function convertNumStringToNum() {  
-  num1 = parseFloat(expressionArray[i - 1]);
-  operator = expressionArray[i];
-  num2 = parseFloat(expressionArray[i + 1]);
-  answer = calculate(num1, operator, num2);
+  const currentDisplay = (outPutBox.value = answer);
+  expressionArray = [];
+  console.log('expressionArray post reset: ', expressionArray);
+  expressionArray.push(currentDisplay);
+  console.log('expressionArray post push: ', expressionArray);
+  //answer = num1;
+  //console.log('expressionArray post slice: ', expressionArray);
+  console.log('ima workin');
 }
 
 function calculate(num1, operator, num2) {
   switch (operator) {
-    case "+":
-      answer = num1 + num2;
+    case '+':
+      return num1 + num2;
       break;
 
-    case "-":
-      answer = num1 - num2;
+    case '-':
+      return num1 - num2;
       break;
 
-    case "x":
-      answer = num1 * num2;
+    case 'x':
+      return num1 * num2;
       break;
 
-    case "/":
-      answer = num1 / num2;
-  replace(answer, i);    
+    case '/':
+      return num1 / num2;
+    //replace(answer, i);
   }
-console.log(answer);
- // replace(answer, i);
- console.log("array is " + expressionArray);
-  document.getElementById("output-box").value = answer;
+  console.log(answer);
+  // replace(answer, i);
+  console.log('array is ' + expressionArray);
 }
 
 function replace(answer, i) {
-console.log("i comes in as "+ i);
+  console.log('i comes in as ' + i);
   expressionArray.splice(i, 2);
-console.log("i-1 is " + i-1);
-  expressionArray[i-1] = answerCalc;
+  console.log('i-1 is ' + i - 1);
+  expressionArray[i - 1] = answerCalc;
 }
 
 function clearOutputBox() {
-  document.getElementById("output-box").value = "";
+  document.getElementById('output-box').value = '';
   expressionArray = [];
-  numString = "";
+  numString = '';
 }
-
